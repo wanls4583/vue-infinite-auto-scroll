@@ -1,4 +1,4 @@
-import vueMyCLass from './components/scroller.vue'
+import vueMyCLass from './components/vue-infinite-auto-scroll.vue'
 
 vueMyCLass.install = function (Vue, options = {}) {
   Vue.component(options.componentName || vueMyCLass.name, vueMyCLass)

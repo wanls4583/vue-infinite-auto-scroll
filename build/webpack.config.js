@@ -1,4 +1,5 @@
 var path = require('path');
+var uglifyjs = require('uglifyjs-webpack-plugin');
 
 // 拼接我们的工作区路径为一个绝对路径
 function resolve(dir) {
@@ -10,7 +11,7 @@ module.exports = {
     output: {
         path: resolve('dist'),
         // 编译输出的文件名
-        filename: 'vue-infinite-scroll.js'
+        filename: 'vue-infinite-auto-scroll.min.js'
     },
     resolve: {
         // 自动补全的扩展名
@@ -29,5 +30,8 @@ module.exports = {
             loader: 'vue-loader',
             include: [resolve('src'), resolve('test')]
         }]
-    }
+    },
+    plugins:[
+        new uglifyjs()
+    ]
 }
