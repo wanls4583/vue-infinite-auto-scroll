@@ -1,0 +1,23 @@
+{
+  "name": "vue-infinite-scroll",
+  "version": "1.0.0",
+  "description": "基于vue.js的无缝自动滚动的插件，可添加无限数据而不卡顿",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "webpack --config build/webpack.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wanls4583/vue-infinite-scroll.git"
+  },
+  "author": "lisong",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wanls4583/vue-infinite-scroll/issues"
+  },
+  "homepage": "https://github.com/wanls4583/vue-infinite-scroll#readme",
+  "devDependencies": {
+    "vue-loader": "^14.2.2",
+    "vue-template-compiler": "^2.5.16"
+  }
+}
