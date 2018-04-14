@@ -1,37 +1,60 @@
 var path = require('path');
-var uglifyjs = require('uglifyjs-webpack-plugin');
-
+const webpack = require('webpack')
+const version = require('../package.json').version
 // 拼接我们的工作区路径为一个绝对路径
 function resolve(dir) {
     return path.join(__dirname, '..', dir);
 }
-
 module.exports = {
     entry: resolve('src/index.js'),
     output: {
         path: resolve('dist'),
-        // 编译输出的文件名
-        filename: 'vue-infinite-auto-scroll.min.js'
+        filename: 'vue-infinite-auto-scroll.min.js',
+        library: 'vueInfiniteAutoScroll',
+        // libraryExport和libraryTarget必须，否则vue导入时报template undefined错误
+        libraryExport: 'default',
+        libraryTarget: 'umd'
     },
     resolve: {
-        // 自动补全的扩展名
-        extensions: ['.js', '.vue', '.json'],
         modules: [
             resolve('src'),
             resolve('node_modules')
         ],
         alias: {
-            'src': resolve('src')
-        }
+            src: 'src',
+            vue$: 'vue/dist/vue.common.js'
+        },
+        extensions: ['.js', '.json', '.vue']
     },
     module: {
         rules: [{
-            test: /\.vue$/,
-            loader: 'vue-loader',
-            include: [resolve('src'), resolve('test')]
-        }]
+                test: /\.vue$/,
+                loader: 'vue-loader',
+                options: {
+                    loaders: {}
+                }
+            },
+            {
+                test: /\.js$/,
+                loader: 'babel-loader',
+                exclude: /node_modules/
+            }
+        ]
     },
-    plugins:[
-        new uglifyjs()
+    plugins: [
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: '"production"'
+            },
+            VERSION: JSON.stringify(version)
+        }),
+        new webpack.optimize.UglifyJsPlugin({
+            sourceMap: false,
+            compress: {
+                warnings: false,
+                drop_debugger: true,
+                drop_console: true
+            }
+        })
     ]
 }

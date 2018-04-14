@@ -17,12 +17,15 @@
   },
   "homepage": "https://github.com/wanls4583/vue-infinite-scroll#readme",
   "devDependencies": {
-    "vue-loader": "^14.2.2",
-    "vue-template-compiler": "^2.5.16",
-    "webpack": "^4.5.0",
-    "uglifyjs-webpack-plugin": "^1.2.4",
-    "node-sass": "^4.8.3",
-    "sass-loader": "^7.0.1",
-    "css-loader": "^0.28.11"
+    "babel-core": "^6.0.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "babel-polyfill": "^6.26.0",
+    "node-sass": "^4.5.2",
+    "sass-loader": "^6.0.6",
+    "vue": "^2.5.13",
+    "vue-loader": "^11.3.3",
+    "vue-template-compiler": "^2.5.13",
+    "webpack": "^3.5.6"
   }
 }
