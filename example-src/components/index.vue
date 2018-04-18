@@ -1,5 +1,5 @@
 <template>
-	<scroller :data="listData" :option="{force:true}" class="scroller">
+	<scroller :data="listData" :option="{force:true,newFirst:true,once:true}" class="scroller-wrap">
 		<template slot-scope="props">
 			<span v-text="props.item.txt"></span>
 		</template>
@@ -39,9 +39,12 @@
 	}
 </script>
 <style lang="sass">
+	.scroller-wrap{
+		margin-top: 50px;
+		height: 400px;
+	}
 	.scroller{
-		height: 500px;
-		margin: 50px 0 0;
-		text-align: center;
+		width: 200px;
+		margin: 0 auto;
 	}
 </style>

@@ -8387,21 +8387,19 @@ if (inBrowser) {
 	Author Tobias Koppers @sokra
 */
 // css base code, injected by the css-loader
-module.exports = function() {
+module.exports = function(useSourceMap) {
 	var list = [];
 
 	// return the list of modules as css string
 	list.toString = function toString() {
-		var result = [];
-		for(var i = 0; i < this.length; i++) {
-			var item = this[i];
+		return this.map(function (item) {
+			var content = cssWithMappingToString(item, useSourceMap);
 			if(item[2]) {
-				result.push("@media " + item[2] + "{" + item[1] + "}");
+				return "@media " + item[2] + "{" + content + "}";
 			} else {
-				result.push(item[1]);
+				return content;
 			}
-		}
-		return result.join("");
+		}).join("");
 	};
 
 	// import a list of modules into the list
@@ -8432,6 +8430,34 @@ module.exports = function() {
 	};
 	return list;
 };
+
+function cssWithMappingToString(item, useSourceMap) {
+	var content = item[1] || '';
+	var cssMapping = item[3];
+	if (!cssMapping) {
+		return content;
+	}
+
+	if (useSourceMap && typeof btoa === 'function') {
+		var sourceMapping = toComment(cssMapping);
+		var sourceURLs = cssMapping.sources.map(function (source) {
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+		});
+
+		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+	}
+
+	return [content].join('\n');
+}
+
+// Adapted from convert-source-map (MIT)
+function toComment(sourceMap) {
+	// eslint-disable-next-line no-undef
+	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+
+	return '/*# ' + data + ' */';
+}
 
 
 /***/ }),
@@ -8688,15 +8714,16 @@ var app = new _vue2.default({
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global) {var apply = Function.prototype.apply;
+/* WEBPACK VAR INJECTION */(function(global) {var scope = this;
+var apply = Function.prototype.apply;
 
 // DOM APIs, for completeness
 
 exports.setTimeout = function() {
-  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
+  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
 };
 exports.setInterval = function() {
-  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
+  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
 };
 exports.clearTimeout =
 exports.clearInterval = function(timeout) {
@@ -8711,7 +8738,7 @@ function Timeout(id, clearFn) {
 }
 Timeout.prototype.unref = Timeout.prototype.ref = function() {};
 Timeout.prototype.close = function() {
-  this._clearFn.call(window, this._id);
+  this._clearFn.call(scope, this._id);
 };
 
 // Does not start the time, just sets up the members needed.
@@ -8958,7 +8985,7 @@ var Component = __webpack_require__(2)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\Administrator\\Desktop\\test\\vue-infinite-auto-scroll\\example-src\\App.vue"
+Component.options.__file = "C:\\Users\\Administrator\\Desktop\\github\\vue-infinite-auto-scroll\\example-src\\App.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] App.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -11702,7 +11729,7 @@ var Component = __webpack_require__(2)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\Administrator\\Desktop\\test\\vue-infinite-auto-scroll\\example-src\\components\\index.vue"
+Component.options.__file = "C:\\Users\\Administrator\\Desktop\\github\\vue-infinite-auto-scroll\\example-src\\components\\index.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] index.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -11733,13 +11760,13 @@ var content = __webpack_require__(16);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(5)("0ae3ce78", content, false);
+var update = __webpack_require__(5)("a4456cec", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-31a6c8bf\",\"scoped\":false,\"hasInlineConfig\":false}!../../node_modules/sass-loader/lib/loader.js!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./index.vue", function() {
-     var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-31a6c8bf\",\"scoped\":false,\"hasInlineConfig\":false}!../../node_modules/sass-loader/lib/loader.js!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./index.vue");
+   module.hot.accept("!!../../node_modules/_css-loader@0.28.11@css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-31a6c8bf\",\"scoped\":false,\"hasInlineConfig\":false}!../../node_modules/sass-loader/lib/loader.js!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./index.vue", function() {
+     var newContent = require("!!../../node_modules/_css-loader@0.28.11@css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-31a6c8bf\",\"scoped\":false,\"hasInlineConfig\":false}!../../node_modules/sass-loader/lib/loader.js!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./index.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -11752,12 +11779,12 @@ if(false) {
 /* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(4)();
+exports = module.exports = __webpack_require__(4)(false);
 // imports
 
 
 // module
-exports.push([module.i, "\n.scroller {\n  height: 500px;\n  margin: 50px 0 0;\n  text-align: center;\n}\n", ""]);
+exports.push([module.i, "\n.scroller-wrap {\n  margin-top: 50px;\n  height: 400px;\n}\n.scroller {\n  width: 200px;\n  margin: 0 auto;\n}\n", ""]);
 
 // exports
 
@@ -11859,11 +11886,11 @@ var Component = __webpack_require__(2)(
   /* template */
   __webpack_require__(23),
   /* scopeId */
-  "data-v-429371df",
+  null,
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\Administrator\\Desktop\\test\\vue-infinite-auto-scroll\\src\\components\\vue-infinite-auto-scroll.vue"
+Component.options.__file = "C:\\Users\\Administrator\\Desktop\\github\\vue-infinite-auto-scroll\\src\\components\\vue-infinite-auto-scroll.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] vue-infinite-auto-scroll.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -11894,13 +11921,13 @@ var content = __webpack_require__(21);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(5)("33f5619c", content, false);
+var update = __webpack_require__(5)("61c51297", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-429371df\",\"scoped\":true,\"hasInlineConfig\":false}!../../node_modules/sass-loader/lib/loader.js!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./vue-infinite-auto-scroll.vue", function() {
-     var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-429371df\",\"scoped\":true,\"hasInlineConfig\":false}!../../node_modules/sass-loader/lib/loader.js!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./vue-infinite-auto-scroll.vue");
+   module.hot.accept("!!../../node_modules/_css-loader@0.28.11@css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-429371df\",\"scoped\":false,\"hasInlineConfig\":false}!../../node_modules/sass-loader/lib/loader.js!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./vue-infinite-auto-scroll.vue", function() {
+     var newContent = require("!!../../node_modules/_css-loader@0.28.11@css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-429371df\",\"scoped\":false,\"hasInlineConfig\":false}!../../node_modules/sass-loader/lib/loader.js!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./vue-infinite-auto-scroll.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -11913,12 +11940,12 @@ if(false) {
 /* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(4)();
+exports = module.exports = __webpack_require__(4)(false);
 // imports
 
 
 // module
-exports.push([module.i, "\n.infinite-warp[data-v-429371df] {\n  overflow: hidden;\n}\n.infinite-warp ul[data-v-429371df], .infinite-warp li[data-v-429371df] {\n    margin: 0;\n    padding: 0;\n    list-style-type: none;\n}\n", ""]);
+exports.push([module.i, "\nul, li {\n  padding: 0;\n  list-style: none;\n}\n.infinite-warp {\n  overflow: hidden;\n}\n", ""]);
 
 // exports
 
@@ -11940,7 +11967,8 @@ exports.default = {
             listData: [],
             copyData: [],
             dataLength: 0,
-            store: []
+            store: [],
+            stroeLastIndex: -1
         };
     },
 
@@ -11970,6 +11998,7 @@ exports.default = {
         this.force = this.option.force || false;
         this.speed = this.option.speed || 1;
         this.once = this.option.once || false;
+        this.newFirst = this.option.newFirst || false;
     },
     mounted: function mounted() {
         this.scroll();
@@ -11987,15 +12016,29 @@ exports.default = {
                 scroller.style = 'transform: translate3d(0px, ' + (translateY - self.speed) + 'px, 0px);';
             } else {
                 var tmp = [];
-                tmp = self.copyData.splice(0, 2);
+                tmp = self.copyData.splice(0, 1);
 
-                if (self.store.length < 1000) {
+                self.stroeLastIndex += tmp.length;
+                if (self.newFirst) {
+                    self.store = tmp.concat(self.store);
+                } else {
+                    if (tmp.length) {
+                        self.store.splice(self.stroeLastIndex, 0, tmp[0]);
+                    }
+                }
+
+                if (self.stroeLastIndex > -1) {
+                    tmp = self.store.splice(0, 1);
                     self.store = self.store.concat(tmp);
                 }
 
-                if (!tmp.length && !self.once && (self.force || !self.force && li.length && self.data.length * li[0].clientHeight > wrap.clientHeight)) {
-                    tmp = self.store.splice(0, 2);
+                if (self.stroeLastIndex < 0 && !self.once && (self.force || !self.force && li.length && self.data.length * li[0].clientHeight > wrap.clientHeight)) {
+                    self.stroeLastIndex = self.store.length - 1;
+                    tmp = self.store.splice(0, 1);
                     self.store = self.store.concat(tmp);
+                }
+                if (self.stroeLastIndex > -1) {
+                    self.stroeLastIndex--;
                 }
                 tmp.forEach(function (item) {
                     self.$set(self.listData, self.listData.length, item);
@@ -12030,9 +12073,10 @@ exports.default = {
             handler: function handler(val, oldVal) {
                 if (val.length > this.dataLength) {
                     this.copyData = this.copyData.concat(val.slice(this.dataLength, val.length));
-                } else if (val != oldVal) {
+                } else if (val.length == 0) {
                     this.store = [];
                     this.copyData = [];
+                    this.listData = [];
                 }
                 this.dataLength = val.length;
             },
@@ -12072,11 +12116,13 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('scroller', {
-    staticClass: "scroller",
+    staticClass: "scroller-wrap",
     attrs: {
       "data": _vm.listData,
       "option": {
-        force: true
+        force: true,
+        newFirst: true,
+        once: true
       }
     },
     scopedSlots: _vm._u([{

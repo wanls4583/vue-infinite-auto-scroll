@@ -15,7 +15,8 @@ export default {
             listData: [],
             copyData: [],
             dataLength: 0,
-            store: []
+            store: [],
+            stroeLastIndex: -1
         }
     },
     props: {
@@ -28,6 +29,7 @@ export default {
         //force:默认为false（如果列表总高度小于容器将不进行循环滚动），当为true时，不论列表总高度为多少都将进行循环滚动
         //speed:滚动速度
         //once:是否只滚动一次
+        //newFirst:新增加的数据是否优先显示，次参数会使轮播的顺序和加入的顺序不一致
         option: {
             type: Object,
             default: () => {
@@ -47,6 +49,7 @@ export default {
         this.force = this.option.force || false;
         this.speed = this.option.speed || 1;
         this.once = this.option.once || false;
+        this.newFirst = this.option.newFirst || false;
     },
     mounted(){
         this.scroll();
@@ -63,19 +66,34 @@ export default {
             let li = scroller.querySelectorAll('li');
             if(scroller.scrollHeight > Math.abs(translateY)+wrap.clientHeight){
                 scroller.style = 'transform: translate3d(0px, '+(translateY-self.speed)+'px, 0px);';
+            //只有列表总高度超过容器高度或者force参数为false时才循环无限滚动
             }else{ 
                 let tmp = [];
-                tmp = self.copyData.splice(0,2);
+                tmp = self.copyData.splice(0,1);
                 //缓存数据
-                if(self.store.length<1000){
+                self.stroeLastIndex += tmp.length;
+                if(self.newFirst){
+                    self.store = tmp.concat(self.store);
+                }else{
+                    if(tmp.length){
+                        self.store.splice(self.stroeLastIndex,0,tmp[0]);
+                    }
+                }
+                //一轮滚动还没结束
+                if(self.stroeLastIndex > -1){
+                    tmp = self.store.splice(0,1);
                     self.store = self.store.concat(tmp);
                 }
-                //如果没有数据了则从缓存里取，以实现循环无限滚动
-                if(!tmp.length && !self.once &&
+                //一轮滚动结束后且满足循环滚动条件则从缓存里取，以实现循环无限滚动
+                if(self.stroeLastIndex < 0 && !self.once &&
                     (self.force || 
                         (!self.force && li.length && self.data.length*li[0].clientHeight > wrap.clientHeight))){
-                    tmp = self.store.splice(0,2);
+                    self.stroeLastIndex = self.store.length - 1;
+                    tmp = self.store.splice(0,1);
                     self.store = self.store.concat(tmp);
+                }
+                if(self.stroeLastIndex > -1){
+                    self.stroeLastIndex--;
                 }
                 tmp.forEach(function(item){
                     self.$set(self.listData,self.listData.length,item);
@@ -110,9 +128,10 @@ export default {
             handler: function (val, oldVal) {  
                 if(val.length>this.dataLength){
                     this.copyData = this.copyData.concat(val.slice(this.dataLength,val.length));
-                }else if(val!=oldVal){
+                }else if(val.length==0){
                     this.store = [];
                     this.copyData = [];
+                    this.listData = [];
                 }
                 this.dataLength = val.length;
             },  
@@ -122,13 +141,12 @@ export default {
 }
 
 </script>
-<style lang="sass" scoped>
+<style lang="sass">
+    ul,li{
+        padding: 0;
+        list-style: none;
+    }
     .infinite-warp{
         overflow: hidden;
-        ul,li{
-            margin: 0;
-            padding: 0;
-            list-style-type: none;
-        }
     }
 </style>
