@@ -35,7 +35,10 @@ webpackBaseConfig = merge(webpackBaseConfig,{
         //在编译出现错误时，使用 NoEmitOnErrorsPlugin 来跳过输出阶段。这样可以确保输出资源不会包含错误
         new webpack.NoEmitOnErrorsPlugin(),
         // HMR shows correct file names in console on update.
-        new webpack.NamedModulesPlugin()
+        new webpack.NamedModulesPlugin(),
+        new HtmlWebpackPlugin({
+            template: utils.resolve('example-src/template.html')
+        })
     ]
 })
 
