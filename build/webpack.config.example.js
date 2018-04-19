@@ -1,7 +1,7 @@
 let webpackBase = require('./webpack.config.base');
 let utils = require('./utils');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const merge = require('deep-assign');
+const merge = require('webpack-merge');
 
 const config = merge(webpackBase,{
 	entry: utils.resolve('example-src/index.js'),

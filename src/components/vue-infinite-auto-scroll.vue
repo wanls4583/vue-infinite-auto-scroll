@@ -141,7 +141,7 @@ export default {
 }
 
 </script>
-<style lang="sass">
+<style lang="scss">
     ul,li{
         padding: 0;
         list-style: none;

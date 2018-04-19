@@ -1,13 +1,10 @@
 var webpack = require('webpack');
 var path = require('path');
-var merge = require('deep-assign');
+var merge = require('webpack-merge');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var webpackBaseConfig = require('./webpack.config.base');
+var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 var utils = require('./utils');
-
-function resolve(path){
-    return __dirname + '/' + path;
-}
 
 webpackBaseConfig = merge(webpackBaseConfig,{
     devtool: '#cheap-module-eval-source-map',
@@ -15,18 +12,6 @@ webpackBaseConfig = merge(webpackBaseConfig,{
     output: {
         path: utils.resolve('example'),
         filename: '[name].js'
-    },
-    module: {
-        rules:[
-            {
-                test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-                loader: 'url-loader',
-                options: {
-                    limit: 10000,
-                    name: '[name].[ext]'
-                }
-            }
-        ]
     },
     plugins: [
         //HotModule 插件在页面进行变更的时候只会重回对应的页面模块，不会重绘整个 html 文件
@@ -36,6 +21,8 @@ webpackBaseConfig = merge(webpackBaseConfig,{
         new webpack.NoEmitOnErrorsPlugin(),
         // HMR shows correct file names in console on update.
         new webpack.NamedModulesPlugin(),
+        //用于更友好地输出webpack的警告、错误等信息
+        new FriendlyErrorsPlugin(),
         new HtmlWebpackPlugin({
             template: utils.resolve('example-src/template.html')
         })

@@ -1,6 +1,6 @@
 let webpackBase = require('./webpack.config.base');
 let utils = require('./utils');
-const merge = require('deep-assign');
+const merge = require('webpack-merge');
 const webpack = require('webpack')
 const version = require('../package.json').version
 
