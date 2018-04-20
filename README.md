@@ -64,6 +64,7 @@ Vue.use(scroll,{componentName: 'vue-infinite-auto-scroll'})
 |`speed`|数值越大速度滚动越快|`1`|`Number`|
 |`force`|是否强制滚动，如果为ture，则即使列表小于容器高度，也将循环滚动|`false`|`Number`|
 |`once`|是否只滚动一次|`false`|`Boolean`|
+|`newFirst`|动态新增的数据是否优先显示，为true时将打乱显示的顺序|`false`|`Boolean`|
 
 
 ## 个别特殊配置项说明
