@@ -55,6 +55,7 @@ Vue.use(scroll,{componentName: 'vue-infinite-auto-scroll'})
    }
 </script>
 ```
+
 ##案例
 请查看[**`example目录`**](https://github.com/wanls4583/vue-infinite-auto-scroll/tree/master/example)
 
