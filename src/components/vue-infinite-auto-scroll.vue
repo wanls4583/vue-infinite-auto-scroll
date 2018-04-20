@@ -143,6 +143,7 @@ export default {
 </script>
 <style lang="scss">
     ul,li{
+        margin: 0;
         padding: 0;
         list-style: none;
     }
