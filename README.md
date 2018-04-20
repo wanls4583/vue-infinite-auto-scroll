@@ -1,4 +1,4 @@
-# vue-seamless-scroll 
+# vue-infinite-auto-scroll
 > 基于vue.js的无缝自动滚动的插件，可添加无限数据而不卡顿
 
 ## 内容
