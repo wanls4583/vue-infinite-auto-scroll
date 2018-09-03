@@ -29,7 +29,7 @@ export default {
         //force:默认为false（如果列表总高度小于容器将不进行循环滚动），当为true时，不论列表总高度为多少都将进行循环滚动
         //speed:滚动速度
         //once:是否只滚动一次
-        //newFirst:新增加的数据是否优先显示，次参数会使轮播的顺序和加入的顺序不一致
+        //newFirst:新增加的数据是否优先显示，此参数会使轮播的顺序和加入的顺序不一致
         option: {
             type: Object,
             default: () => {
@@ -43,8 +43,7 @@ export default {
         window.scrollerCount++;
         this.scrollerClass = 'scroller'+window.scrollerCount;
         this.wrapClass = 'infinite-warp'+window.scrollerCount;
-        this.listData = this.data.slice(0,1);
-        this.copyData = this.data.slice(1,this.data.length);
+        this.copyData = this.data.slice(0,this.data.length);
         this.dataLength = this.data.length;
         this.force = this.option.force || false;
         this.speed = this.option.speed || 1;
@@ -66,35 +65,34 @@ export default {
             let li = scroller.querySelectorAll('li');
             if(scroller.scrollHeight > Math.abs(translateY)+wrap.clientHeight){
                 scroller.style = 'transform: translate3d(0px, '+(translateY-self.speed)+'px, 0px);';
-            //只有列表总高度超过容器高度或者force参数为false时才循环无限滚动
-            }else{ 
+            }else{ //只有列表总高度超过容器高度或者force参数为false时才循环无限滚动
                 let tmp = [];
+                let length = 0;
                 tmp = self.copyData.splice(0,1);
-                //缓存数据
-                self.stroeLastIndex += tmp.length;
+                length = tmp.length;
                 if(self.newFirst){
+                    //新数据添加到缓存对象的头部（将第一个被取出）
                     self.store = tmp.concat(self.store);
-                }else{
-                    if(tmp.length){
-                        self.store.splice(self.stroeLastIndex,0,tmp[0]);
-                    }
+                }else if(tmp.length){
+                    //新数据添加到缓存对象的尾部（等待缓存对象中前面的数据展示完才会被取出）
+                    self.store.splice(0,0,tmp[0]);
                 }
-                //一轮滚动还没结束
-                if(self.stroeLastIndex > -1){
+                //一轮滚动还没结束（还有新数据未展示完）
+                if(length){
+                    //从缓存对象中取出第一个数据用于展示
                     tmp = self.store.splice(0,1);
+                    //取出后再添加到尾部，用于循环展示
                     self.store = self.store.concat(tmp);
                 }
                 //一轮滚动结束后且满足循环滚动条件则从缓存里取，以实现循环无限滚动
-                if(self.stroeLastIndex < 0 && !self.once &&
-                    (self.force || 
-                        (!self.force && li.length && self.data.length*li[0].clientHeight > wrap.clientHeight))){
-                    self.stroeLastIndex = self.store.length - 1;
+                if(!length && !self.once &&
+                    (self.force || (!self.force && li.length && self.data.length*li[0].clientHeight > wrap.clientHeight))){
+                    //从缓存对象中取出第一个
                     tmp = self.store.splice(0,1);
+                    //取出后再添加到尾部，用于循环展示
                     self.store = self.store.concat(tmp);
                 }
-                if(self.stroeLastIndex > -1){
-                    self.stroeLastIndex--;
-                }
+                //将取出的数据展示到页面
                 tmp.forEach(function(item){
                     self.$set(self.listData,self.listData.length,item);
                 });

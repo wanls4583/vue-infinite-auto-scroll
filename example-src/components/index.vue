@@ -83,7 +83,7 @@ export default {
         },
         creatData3() {
             let self = this;
-            for (let i = 0; i < 50; i++) {
+            for (let i = 0; i < 20; i++) {
                 self.listData3.push({
                     txt: '这是第' + (i+1) + '行数据...'
                 });
@@ -99,11 +99,17 @@ export default {
         },
         run() {
             let self = this;
-            setInterval(function() {
+            _add();
+            function _add(){
                 self.listData4.push({
                     txt: '这是第' + (++num) + '行数据...'
                 });
-            }, 500);
+                if(num < 50){
+                    setTimeout(function() {
+                        _add();
+                    }, 1000);
+                }
+            }
         }
     }
 }
