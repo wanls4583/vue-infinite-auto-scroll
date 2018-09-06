@@ -57,9 +57,13 @@ Vue.use(scroll,{componentName: 'vue-infinite-auto-scroll'})
 ```
 
 ## 案例
-请查看[**`example`**](https://github.com/wanls4583/vue-infinite-auto-scroll/tree/master/example)
+
+请查看[**`example`**](https://github.com/wanls4583/vue-infinite-auto-scroll/tree/master/example-src)
+
+[**`online demo`**](https://blog.lisong.hn.cn/code/vue-infinite-auto-scroll/example/index.html)
 
 ## 配置项
+
 |key|description|default|val|
 |:---|---|---|---|
 |`speed`|数值越大速度滚动越快|`1`|`Number`|
@@ -74,8 +78,10 @@ Vue.use(scroll,{componentName: 'vue-infinite-auto-scroll'})
 
 
 ## 历史版本
+
 See the GitHub [历史版本](https://github.com/wanls4583/vue-infinite-auto-scroll/releases).
 
 
 ## 贡献
+
 欢迎给出一些意见和优化，期待你的 `Pull Request`
