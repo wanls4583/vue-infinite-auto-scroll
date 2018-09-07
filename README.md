@@ -60,7 +60,7 @@ Vue.use(scroll,{componentName: 'vue-infinite-auto-scroll'})
 
 请查看[**`example`**](https://github.com/wanls4583/vue-infinite-auto-scroll/tree/master/example-src)
 
-[**`online demo`**](https://blog.lisong.hn.cn/code/vue-infinite-auto-scroll/example/index.html)
+[**`online demo`**](https://blog.lisong.hn.cn/code/example/vue-infinite-auto-scroll/index.html#/index)
 
 ## 配置项
 
