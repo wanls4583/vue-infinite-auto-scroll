@@ -106,7 +106,7 @@ export default {
                     scroller.style = 'transform: translate3d(0px, '+(translateY%liHieght)+'px, 0px);';
                 }
             }
-            window.requestAnimationFrame(function(){
+            this.timer = window.requestAnimationFrame(function(){
                 self.scroll();
             })
         },
@@ -119,6 +119,16 @@ export default {
                 startY = Number(matrix.replace(/matrix\(|\)/g, '').split(',')[5]);
             }
             return startY;
+        },
+        stop() {
+            window.cancelAnimationFrame(this.timer);
+        },
+        start() {
+            var self = this;
+            this.stop();
+            this.timer = window.requestAnimationFrame(function(){
+                self.scroll();
+            });
         }
     },
     watch:{

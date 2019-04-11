@@ -31,7 +31,7 @@
 	        </div>
     	</div>
     	<div class="item">
-	        <scroller :data="listData4" :option="{newFirst:true}" class="scroller-wrap" key="s3">
+	        <scroller ref="scroller4" :data="listData4" :option="{newFirst:true}" class="scroller-wrap" key="s3">
 	            <template slot-scope="props">
 	                <span v-text="props.item.txt"></span>
 	            </template>
@@ -39,6 +39,10 @@
 	        <div class="option">
 	        	<span style="color:#3e76f6">option{newFirst:true}</span><span style="color:green"></span>
 	        </div>
+            <div class="btn_w" style="text-align: center">
+                <button @click="$refs.scroller4.stop()">stop</button>
+                <button @click="$refs.scroller4.start()">restart</button>
+            </div>
     	</div>
     </div>
 </template>
@@ -127,7 +131,7 @@ html {
 
 .item{
 	width: 40%;
-    height: 340px;
+    /*height: 340px;*/
     margin: 5%;
     padding: 20px 0;
     border: 1px solid #ccc;
